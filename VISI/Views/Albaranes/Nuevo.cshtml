@@ -1,0 +1,260 @@
+﻿@model AlbaranesViewModel
+@{
+    ViewData["title"] = "Nuevo Albaran";
+
+    if (Model.Detalles is null)
+    {
+                            Model.Detalles = new List<Albaranes_detalle> { new Albaranes_detalle() { LineaNum = 1 } };
+
+    }
+    if ( Model.Detalles is not null)
+    {
+        foreach (var campo in Model.Detalles)
+        {
+        <h3>@campo.Descripcion</h3>
+        }
+    }
+
+    int pepe = -1;
+    string coco = "";
+    string alerto(int a)
+    {
+        <script>
+            alert("alerto ");
+        </script>
+         
+        return "";
+    } 
+    decimal calcula(decimal a, decimal b)
+    {
+        return a * b;
+        
+    }
+    
+    string mifuncion(int id, string cc)
+    {
+
+        //string caca = GetElementsByTagName("th");
+
+        //string texto = "";
+        //foreach (var linea in Model.Detalles)
+        //{
+        //    texto += linea.Descripcion;
+        //}
+        //var dev = "alert('" + texto + "')";   
+
+        //Model.Detalles[id].Descripcion = cc;
+        //<script>
+        //    await elementId();
+        //</script>
+        //return "alert('" + id.ToString()+cc + "')";
+        //var aa = Model.Detalles[0].Cantidad.ToString();
+        //return "alert('"+aa+"')";
+        return "";
+    }
+}
+
+
+<head>
+    <style>
+        <link rel="stylesheet" type="text/css" href="/css/borrame.css" media="screen" / / >
+    </style>
+</head>
+<body>
+<h1 >Nuevo Albaran</h1>
+
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+<form name="f1" asp-controller="Albaranes" class="input_container" asp-route-id="@Model">  
+    
+    <div class="input-group mb-3 align-self-center">
+                <label asp-for="Numero" class="input-group-text"></label>
+                <input type="text" asp-for="Numero" class="input_container" />
+                <span asp-validation-for="Numero" class="text-danger"></span>
+
+            <input name="NumLinea" id="NumLinea" type="hidden" asp-for="numLinea" class="input_container" >
+
+   
+            <label asp-for="Fecha" class="input-group-text "></label>
+            <input type="date" asp-for="Fecha" class="input_container " />
+            <span asp-validation-for="Fecha" class="text-danger"></span>
+ 
+    
+            <label asp-for="ClienteId" class="input-group-text ">Cliente:</label>
+            <select asp-for="ClienteId" asp-items="Model.ClientesSelector" class="form-select"
+                    style="width:min-content"></select>
+             <!--   <input type="text" asp-for="ClienteId" class="input_container" />   -->
+            <span asp-validation-for="ClienteId" class="text-danger"></span>
+
+
+            <label asp-for="BaseImponible" id="BI"
+                class="input-group-text ">@Model.BaseImponible</label>
+      
+
+    </div>
+
+    <!-- **************************************************************************************************--> 
+     
+    <button   name ="addlinea" asp-action="Addlinea" method="post" class="btn btn-primary" type="submit">Añadir línea</button>
+    <button asp-action="Grabar" method="post" type="submit" class="btn btn-primary">Guardar</button>
+
+        <a class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#ModalSalir">Cancelar</a>
+
+
+<!--    <a class="btn btn-secondary"  onclick='@mifuncion(111,"")' >Descartar</a> -->
+ 
+    <br />
+    <br />
+
+   @{//if (Model.albaranesConDetalle.Detalles is null) Model.albaranesConDetalle.Detalles = new List<Albaranes_detalle>();
+   }
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Acciones</th>                              
+                <th>Línea</th>
+            
+                <th>Descripción</th>
+                <th>Cantidad</th>
+                <th>Precio</th>
+                <th>Importe</th>               
+            </tr>
+        </thead>
+        <tbody id="reorden">
+
+               
+                @if (Model.Detalles is null)
+                {
+                    Model.Detalles = new List<Albaranes_detalle> { new Albaranes_detalle() { LineaNum = 1 } };
+                }
+
+
+            
+            @foreach (var linea in Model.Detalles)
+            {
+                 
+                ++pepe;                                   
+                @if (pepe % 2 == 0) coco = "modal-lg table-primary";
+                else coco = "modal-lg tabla-warning";
+                    
+                    <tr class='@coco' >
+                  
+                    <td>
+                                     
+                            <button name='@pepe'  onclick="alerta(@pepe)" asp-action="DelLinea" method="post"
+                                type="submit" class="btn btn-danger">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                                             
+                    </td>                   
+                    <td>
+                           
+                            <input type="hidden" asp-for="Detalles[pepe].LineaNum"
+                               class="input_container" contenteditable="false" value="@linea.LineaNum"/>
+                               <label style="width:auto">@linea.LineaNum</label>
+                              
+
+                    </td>
+                 <td>
+                            <input type="text" asp-for="Detalles[pepe].Descripcion" class="input_container"
+                               style="width : 350px"
+                            contenteditable="true" value="@linea.Descripcion"/>
+                           
+                </td>
+                 <td>
+                    <input type="text" asp-for="Detalles[pepe].Cantidad" class="input_container" 
+                            contenteditable="true" id="cantidad.@pepe" value="@linea.Cantidad" />
+                 </td>
+                 <td>
+                    <input type="number" asp-for="Detalles[pepe].Precio"  value="@linea.Precio"
+                               class="input_container" contenteditable="true" onchange="calculo(@pepe)" id="precio.@pepe" />
+                                           <span asp-validation-for="Detalles[pepe].Precio" class="text-danger"></span>
+
+                 </td>
+                 <td>
+                            <label name="rdo.@pepe" id="rdo.@pepe"  class="importes"  >
+                                               @calcula(linea.Precio,linea.Cantidad)
+                                </label>                     
+
+                 </td>                  
+
+                </tr>
+                   
+                }
+          </tbody>
+   </table>
+      
+</form>
+    
+</body>
+
+
+<!-- Modal -->
+<div class="modal fade"  id="ModalSalir" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">
+                    <i class="bi bi-question-octagon"></i>
+                </h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Confirme si desea salir...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>                
+                <a class="btn btn-danger" asp-action="Index">Salir</a>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+@section scripts{
+<script>
+    function alerta(a){
+               
+        var inputNombre = document.getElementById("NumLinea");
+        inputNombre.value = a;        
+        
+    }
+    function calculo(a){
+            
+            
+            var Cantidad = document.getElementById('cantidad.'+a);
+            var Precio   = document.getElementById('precio.'+a);
+                   
+            var b = Cantidad.value * Precio.value;   
+            
+           
+            //document.querySelector('#rdo'+a).innerText = 'Tu Valor';
+            //document.querySelector('#rdo.0').innerText = 'Tu Valor'; 
+            
+            document.getElementById('rdo.'+a).innerHTML = b;
+
+          //aprender a sumar la clase importes
+
+            var total = 0;
+            const nodeList = document.querySelectorAll(".importes");
+            for (let i = 0; i < nodeList.length; i++) {
+                //alert(nodeList[i].value);
+                total += nodeList[i].value;
+            }
+            //alert(total);
+            document.getElementById('BI').innerHTML = total; //ACTUALIZAR SUMA DE IMPORTES
+
+
+
+    }
+    function actuaBI(a) {
+            //var inputNombre = document.getElementById("NumLinea");
+               // inputNombre.value = a;
+               alert("dentro");
+    }           
+
+</script>
+}

@@ -1,0 +1,105 @@
+﻿@model ListadoAlbaranesViewModel
+@{
+    var plantillaLink = string.Concat(Model.BaseURL, "?Pagina={0}&RegistrosPorPagina={1}");
+   
+}
+
+
+<input name="Pagina" id="Pagina" type="hidden" asp-for="Pagina" class="input_container">
+<input name="RegPagina" id="RegPagina" type="hidden" asp-for="RegistrosPorPagina" class="input_container">
+
+
+@if (Model.TotaldePaginas > 0)
+{
+    <div>
+        <nav>
+            <ul class="pagination">
+
+                <!-- AQUÍ SE DEFINE EL BOTON 'ANTERIOR' *************************************************************************-->
+                <button onclick=@(Model.Pagina > 1 ? "alerta("+(@Model.Pagina-1)+")" : null) asp-action="Index" type="submit" 
+                    class="btn @( Model.Pagina > 1  ? "btn-primary" : "btn-secondary disabled") m-1 mt-1 " >
+                    Anterior <i class="bi bi-arrow-left-circle-fill"></i>
+                </button>
+                <!-- ************************************************************************************************************-->
+                <!-- AQUÍ SE DEFINE EL BOTON 'SIGUIENTE *************************************************************************-->
+                <button onclick=@(Model.Pagina < Model.TotaldePaginas ? "alerta("+(@Model.Pagina+1)+")" : null) asp-action="Index" type="submit"
+                    class="btn @( Model.Pagina < Model.TotaldePaginas  ? "btn-primary" : "btn-secondary disabled") m-1 mt-1 ">
+                    Siguiente <i class="bi bi-arrow-right-circle-fill"></i>
+                </button>
+                <!-- ************************************************************************************************************-->
+                @for (var pagina = 1; pagina <= @Model.TotaldePaginas; pagina++)
+                {
+
+                    <li class="page-item" @(pagina == Model.Pagina ? "active" : null)>
+
+                        @if ((Model.Pagina - pagina > -3) && (Model.Pagina - pagina < 3))
+                        {
+
+                            <button  onclick="alerta(@pagina)" asp-action="Index" type="submit" class="btn @(pagina == Model.Pagina ? "btn-primary" : "btn-secondary") m-1 mt-1">                
+                                @pagina
+                            </button>
+
+                        }
+                        else if (pagina == Model.TotaldePaginas)
+                        {
+                            <button  class="btn btn-muted") m-1 mt-1">                
+                                ...
+                            </button>     
+                            <button  onclick="alerta(@pagina)" asp-action="Index" type="submit" class="btn @(pagina == Model.Pagina ? "btn-primary" : "btn-secondary") m-1 mt-1">                
+                                @pagina
+                            </button>
+                        }
+                        else if (pagina == 1)
+                        {
+                            <button  onclick="alerta(@pagina)" asp-action="Index" type="submit" class="btn @(pagina == Model.Pagina ? "btn-primary" : "btn-secondary") m-1 mt-1">                
+                                @pagina
+                            </button>
+                            <button  class="btn btn-black-50") m-1 mt-1">                
+                                ......
+                            </button>
+                        }
+
+                    </li>
+                }
+                
+                <div class="col m-2">
+                    <card class="text-primary" >
+                    <span> Hay @Model.TotaldeRegistros albaranes en @Model.TotaldePaginas páginas. </span>
+                    </card>
+                </div>
+
+                <span class="m-1">Registros por página</span>
+
+                <div class="" col-auto>
+                    <select asp-for="@Model.RegistrosPorPagina" id="cantidadRegistrosPorPagina" class="form-select">
+                        <option>10</option>
+                        <option>25</option>
+                        <option>50</option>
+                        <option>100</option>
+                    </select>
+                </div>
+                
+
+
+
+
+            </ul>
+        </nav>
+    </div>
+}
+else if (Model.ClienteId != 0)
+{
+   
+
+    <div class="alert alert-success" role="alert">
+    <h4 class="alert-heading">Atención!</h4>
+    <p>No hay datos para los filtros seleccionados</p>
+    </div>
+
+   @* <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>*@
+
+
+}

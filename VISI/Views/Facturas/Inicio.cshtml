@@ -1,0 +1,226 @@
+﻿@model FacturaViewModel
+@{
+    ViewData["Title"] = "Facturas";
+    //var redir = "../Inicio";
+    
+
+}
+
+<head>
+@*    <meta charset="utf-8">
+    <link rel='stylesheet prefetch' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'>
+    <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.2/css/bootstrap-select.min.css'>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/js/bootstrap-select.min.js"></script>
+*@
+ 
+    <title></title>
+    @* select2 libreria de selects.......................................................................................
+*@  
+        <link rel='stylesheet' href='~/css/estiloTabla.css'>
+</head>
+
+
+<body>
+
+    <div>
+            <form name="f1" asp-controller="Facturas"  asp-route-id="@Model" method="post">
+                 <div class="input-group mb-3 align-self-center">
+
+
+                        <label asp-for="Numero" class="input-group-text"></label>
+                        <input type="text" asp-for="Numero" class="input_container" />
+                        <span asp-validation-for="Numero" class="text-danger"></span>
+
+   
+                        <label asp-for="Fecha" class="input-group-text "></label>
+                        <input type="date" asp-for="Fecha" class="input_container " />
+                        <span asp-validation-for="Fecha" class="text-danger"></span>
+ 
+    
+                        <label asp-for="ClienteId" class="input-group-text ">Cliente:</label>
+
+
+
+                        <input id="miSel" list="mili" type="search" onchange="ActualizaCliente()" size="50"
+                            placeholder="Seleccione cliente" value="" />
+                        <datalist id="mili">
+                            @foreach (var cliente in Model.ClientesSelector)
+                            {
+                            <option value="@cliente.Text"></option>
+                            }
+                        </datalist>
+                        <input asp-for="NombreCliente" type="hidden" id="clienteOculto" />
+                </div>
+
+                <a class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#ModalSalir">Cancelar</a>
+                <button asp-action="borrame" onclick="grabarFactura()" type="button" class="btn btn-primary">Guardar</button>
+
+            </form>
+
+    </div>
+
+
+    <div id="contenedor-listado-facturas" >
+@*        <button data-bind="click: grabarFactura" type="button" class="btn btn-primary">Guardar</button>
+*@
+
+
+        <div class="text-center">
+            <button type="button" class="btn btn-primary mb-3 mt-3" onclick="AgregarLinea()">
+               Añadir línea
+            </button>
+        </div>
+        <div class="text-end">
+            <input class="align-content-end" id="sumaTotal" contenteditable="false" /> 
+
+        </div>
+
+
+        <table class="tabla-lineas-factura" style="cursor: pointer" >
+            <thead data-bind="hidden: noCab">
+                    <tr class="fw-bold" style="text-align:center">
+                        <td> hola </td>
+                        <td></td>
+                        <td>Descripción</td>
+                        <td>Cantidad</td>
+                        <td>Precio</td>
+                        <td>Importe</td>
+
+                    </tr>
+            </thead>
+
+            <tbody data-bind="foreach: facturas">
+
+                        <tr name="factura" contenteditable="true" >
+    
+                            <td id="id" data-bind="text: id" class="numer" contenteditable="false"> </td>
+                            <td data-bind="text: numero" class="numer"> </td>
+                            <td> 
+                                <input id="descrip" name="descri" class="sinborde" data-bind="value: descripcion"/>
+                            </td>
+
+                            <td id="cant">
+                        @*     <input class="numer" data-bind="value: cantidad, event: {change: manejarSalidaFocus}" />  *@                           
+                                    <input class="numer sinborde" data-bind="value: cantidad" />
+                            </td>
+                            <td id="prec">
+                                    <input class="numer sinborde" data-bind="value: precio" />        
+                            </td>
+                            <td data-bind="text: subtotal" contenteditable="false"></td>
+                            <td contenteditable="false">
+                                 <i class="bi bi-trash3" data-bind="click: $parent.removeLine"></i>
+                            </td>
+
+                        </tr>
+                  
+            </tbody>
+           
+        </table>
+
+        <div data-bind="visible: noHayFacturas">        
+                                 No hay líneas de detalle...        
+        </div>
+        <div data-bind="visible: cargando" class="spinner-border">            
+        </div>
+    </div>    
+                     
+    
+
+    <partial name="_modalSalir" />
+
+</body>
+
+
+@section Scripts{
+
+    <script src="~/js/facturas.js" asp-append-version="true"></script>
+
+    <script>
+        const urlFactura = "api/facturas";
+    
+        function alerta(){
+
+            //alert('estoy en alerta ');
+            //var aa =    document.getElementById('myid').value;
+            var aa = myid.value;
+            alert(aa);
+            aa = miSel.value;
+            alert(aa);
+            aa = miSel.text;
+            alert(aa);
+            //console.log("objeto select..... ");
+            //console.log(Object.values(miSel));
+        }
+
+        function ActualizaCliente(){
+
+            //tengo que ver como acceder desde Java al modelo para buscar el Id del Cliente...
+            clienteOculto.value = miSel.value;                            
+        }
+
+        function facturaListadoViewModelFn()  
+        {
+            var self = this;
+            self.facturas = ko.observableArray([]);
+            self.cargando = ko.observable(true);
+            self.removeLine = function (linea) { 
+                self.facturas.remove(linea) ;
+                var a = 0;
+                self.facturas().forEach(f => {                
+                    f.id(++a);                    
+                });
+                sumaTotal.value = obtenTotal();
+            };
+            self.noHayFacturas = ko.pureComputed(function()
+            {
+                if (self.cargando()) 
+                { 
+                    return false; 
+                }
+                return self.facturas().length === 0;
+             });
+             self.noCab = ko.pureComputed(function(){
+                 return self.facturas().length === 0;
+             });
+
+        }   
+        function obtenTotal(){
+                    var total = 0
+                     facturaListadoViewModel.facturas().forEach(f => {                
+                    total += f.cantidad() * f.precio();                    
+                    });
+                    return total;
+        }
+        function facturaViewModel({id, numero, descripcion, cantidad, precio, total}){
+            var self = this;
+            self.id = ko.observable(id);
+            //self.id =  1 + facturaListadoViewModel.facturas().length;
+            
+            self.numero = ko.observable(numero);
+            self.descripcion = ko.observable(descripcion);
+            self.cantidad = ko.observable(cantidad);
+            self.precio = ko.observable(precio);
+            self.subtotal = ko.pureComputed(function() {                    
+                    sumaTotal.value = obtenTotal();      
+                    console.log(`multiplicando ${self.cantidad()}`);
+                    console.log(`por ${self.precio()}`);
+
+                    return self.cantidad() * self.precio();
+            }, this);
+            self.isnew = ko.pureComputed(function() {
+                return self.id() == 0;
+            })
+
+        }
+        const   facturaListadoViewModel = new facturaListadoViewModelFn();
+        setTimeout(() => {
+                facturaListadoViewModel.cargando(false);
+        }, 1000)
+
+        ko.applyBindings(facturaListadoViewModel, document.getElementById('contenedor-listado-facturas'));
+
+    </script>
+}

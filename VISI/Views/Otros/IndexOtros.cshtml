@@ -1,0 +1,22 @@
+﻿@using VISI.Servicios;
+@{
+    ViewData["Title"] = "Módulo de archivos auxiliares";
+}
+<h2>Mantenimiento de archivos auxiliares</h2>
+
+<div>
+<a asp-controller="Otros" asp-action="FormasPago" class="btn btn-primary mb-3">Formas de Pago</a>
+</div>
+<div>
+    <a asp-controller="Home" asp-action="Inicio" class="btn btn-primary mb-3">Administradores</a>
+</div>
+
+
+
+@if (User.IsInRole(Constantes.RolAdmin))
+{
+    <div>
+        <a asp-controller="Usuarios" asp-action="Listado" class="btn btn-primary mb-3">Usuarios</a>
+    </div>
+}
+

@@ -1,0 +1,13 @@
+﻿@model Clientes
+@{
+    ViewData["Title"] = "Borrar Cliente";
+}
+
+<h4 class="mb-3">Confirme eliminación del cliente @Model.Nombre</h4>
+
+<form asp-action="borraCliente">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Eliminar</button>
+    <a class="btn btn-secondary" asp-action="Index" >Cancelar</a>
+
+</form> 

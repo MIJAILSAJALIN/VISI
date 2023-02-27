@@ -1,0 +1,71 @@
+﻿@model LoginViewModel
+@{
+    ViewData["Title"] = "Login en pruebas";
+}
+
+@if (ViewData.Keys.Contains("mensaje"))
+{
+    <p style="color: red">
+        @ViewData["mensaje"]
+    </p>
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title></title>
+  <!-- <link rel="stylesheet" type="text/css" href="/css/visi.css" media="screen" />  -->
+</head>
+
+<body style="background-color:#87CEEB">
+<div class="background-wrap">
+    <div class="background"></div>
+</div>
+
+<h2>
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+</h2>
+
+<div class="card">
+    <div class="card-body">
+
+                <form asp-controller="Usuarios" asp-action="Login" method="post">
+                    <h1 id="litheader">VISI CERRAJEROS     LOGIN</h1>
+                    <div class="inset">
+                        <div>
+                       <!--     <input type="text" name="Email" id="Email" placeholder="Email"> -->
+                            <label asp-for="Email" class="form-label"></label>
+                            <input asp-for="Email" autocomplete="off" class="form-control" placeholder="Email" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                        <div>
+                       <!--     <input type="password" name="Password" id="Password" placeholder="Clave">  -->
+                            <label asp-for="Password" class="form-label"></label>
+                            <input asp-for="Password" class="form-control" placeholder="Password" type="password"/>
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+                        <div>
+                            <input type="checkbox" name="Rememberme" id="Rememberme" asp-for="Rememberme">
+                            <label class="checkbox"></label>
+                            <label class="form-check-label" asp-for="Rememberme">Recuérdame</label>
+                        </div>
+
+                    </div>
+                    <input type="submit" class="btn btn-success">                    
+                    <a class="btn btn-success" asp-action="Registro">Crear una nueva cuenta...</a>
+                    <a class="btn btn-success" asp-action="LoginExterno" asp-route-proveedor="Microsoft">
+                        <i class="bi bi-microsoft"></i>    Registrar con Microsoft
+                    </a>
+
+
+                </form>
+
+    </div>
+</div>
+    
+</body>
+
+
+
+
+</html>

@@ -1,0 +1,65 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@inject SignInManager<IdentityUser> SignInManager
+
+
+    <ul class="navbar-nav">
+    @if (SignInManager.IsSignedIn(User))
+    {
+         
+        <li class="nav-item">
+            <span class="nav-link text-dark"> Usuario: @User.Identity.Name</span>
+        </li>
+        <li class="nav-item">
+            <!-- Button trigger modal -->
+            <button type="button" class="nav-link btn btn-link text-dark" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                <i class="fas fa-sign-out-alt"></i>
+
+                Logout
+            </button>
+
+        </li>
+                       
+    }
+    else                     //Ahora mismo este 'else' se podría quitar, nunca llegará a ejecutarse
+
+    {
+     <li class="nav-item">
+         <a class="nav-link text-dark" asp-controller="Usuarios" asp-action="Registro" >
+             Registro
+         </a>
+         <a class="nav-link text-dark" asp-controller="Usuarios" asp-action="Login"  >
+             Login
+         </a>
+     </li>   
+    }
+
+    </ul>
+
+<!-- Modal -->
+<div class="modal fade"  id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog" >
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">
+                    <i class="bi bi-question-octagon"></i>
+                </h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body btn-secondary">
+                Confirme que desea desloguearse...
+            </div>
+            <div class="modal-footer">
+            
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                
+                <form  class="form-inline" asp-action="logout" asp-controller="Usuarios" >
+                    <button type="submit" class="btn btn-danger">
+                        Logout
+                    </button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,18 @@
+
+.input_container {
+    display: flex;
+    gap: 12px;
+    color: aquamarine;
+    justify-content: space-around;
+    font-size: 26px;
+    text-align: center;
+    
+}
+
+    .input_container input {
+        width: 30%;
+    }
+.table > tbody > tr:hover {
+    background-color: #F2F2F2;
+    cursor: pointer;
+}

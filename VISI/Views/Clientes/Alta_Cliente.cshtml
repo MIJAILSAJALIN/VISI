@@ -1,0 +1,82 @@
+﻿@model ClientesViewModel
+@{
+    ViewData["title"] = "Alta de Clientes";
+}
+  <head>
+    <style type="text/css">
+        #aaa { background-color: #b5bbb2; }
+    </style>
+ </head>
+<body id="aaa"></body>
+   
+
+
+<h1> Alta de Clientes</h1>
+<h2>
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+</h2>
+
+<form asp-controller="Clientes" asp-action="Alta_Cliente">
+    
+    <div class="mb-3">       
+        <label asp-for="Nombre" class="form-label" ></label>        
+        <input type="text" asp-for="Nombre" class="form-control" />
+        <span asp-validation-for="Nombre" class="text-danger"></span>
+    </div>
+    
+    <div class="mb-3">
+        <label asp-for="Nif" class="form-label"></label>
+        <input type="text" asp-for="Nif" class="form-control" />
+        <span asp-validation-for="Nif" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Direccion" class="form-label"></label>
+        <input type="text" asp-for="Direccion" class="form-control" />
+        <span asp-validation-for="Direccion" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Telefono" class="form-label"></label>
+        <input type="text" asp-for="Telefono" class="form-control" />
+        <span asp-validation-for="Telefono" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Cp" class="form-label"></label>
+        <input type="text" asp-for="Cp" class="form-control" />
+        <span asp-validation-for="Cp" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Iban" class="form-label"></label>
+        <input type="text" asp-for="Iban" class="form-control" />
+        <span asp-validation-for="Iban" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Formapago" class="form-label"></label>
+   <!--     <input type="text" asp-for="Formapago" class="form-control" /> -->
+        
+        <select asp-for="Formapago" asp-items="Model.FormasPago" class="form-select"></select>
+        <span asp-validation-for="Formapago" class="text-danger"></span>
+
+    </div>
+    <div class="mb-3">
+        <label asp-for="AdministradorId" class="form-label"></label>
+        <input type="text" asp-for="AdministradorId" class="form-control" />
+        <span asp-validation-for="AdministradorId" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Contacto" class="form-label"></label>
+        <input type="text" asp-for="Contacto" class="form-control" />
+        <span asp-validation-for="Contacto" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Email" class="form-label"></label>
+        <input type="text" asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Almacenar</button>
+    <a class="btn btn-secondary" asp-action="Clientes">Cancelar</a>
+
+</form>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+              

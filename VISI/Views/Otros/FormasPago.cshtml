@@ -1,0 +1,94 @@
+﻿@model IEnumerable<formasDePago>
+@{
+    ViewData["Title"] = "Archivo de formas de pago";
+}
+<h2>Listadode formas de pago</h2>
+
+<br />
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+<form asp-controller="Otros" asp-action="@ViewBag.accion" asp-route-id="{buscador}" method="get">
+   
+     <div class="mb-3">       
+        <label class="form-label" >Código</label>
+        <input class="form-control mb-2" style="width:200px;height:20px;" type="text" size="20" width="20" autofocus 
+                            id="buscador" name="buscador" value="@ViewBag.id"/>        
+   <!--     <span asp-validation-for="" class="text-danger"></span>  -->
+    </div>    
+    <div class="mb-3">
+        <label class="form-label" >Descripción</label>
+        <input class="form-control mb-2" style="width:200px;height:20px;" type="text" size="20" width="20" autofocus
+               id="buscador" name="buscador" value="@ViewBag.Desc" />
+        <!--    <span asp-validation-for="Nif" class="text-danger"></span> -->
+    </div>
+<!--    <button type="submit" class="btn btn-primary mb-3" value="a la merda"></button> -->
+    <input type="submit" class="btn btn-primary mb-3" value="@ViewBag.button"></input>
+</form>
+
+
+
+
+
+
+</tr>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Acciones</th>
+            <th>Nombre</th>
+            <th>Descripción</th>
+
+        </tr>
+    </thead>
+    <tbody id="reorden">
+        @foreach (var formas in Model)
+        {
+                <tr>
+                    <td>
+                        <input type="hidden" value="@formas.Id" class="ids">
+                        <a class="btn btn-primary" asp-controller="Otros" asp-action="EditarFpg" asp-route-id="@formas.Id">Editar</a>
+                        <a class="btn btn-danger" asp-controller="Otros" asp-action="BorrarFpg" asp-route-id="@formas.Id">Borrar</a>
+                    </td>
+
+                    <td>  @formas.Id  </td>
+                    <td>  @formas.Descripcion   </td>
+                   
+                </tr>
+        }
+    </tbody>
+
+</table>
+@section scripts {
+    <script>
+        const urlOrdenar = '@Url.Action("Ordenar")';
+
+        $(function(){            
+
+            $("#reorden").sortable({
+                stop: async function(e, ui)
+                {
+                    await actualizarOrdenes();                
+                }
+            });
+            async function actualizarOrdenes(){
+                const ids = obtenerIdstabla();
+                await enviarIds(ids);
+            }
+            function obtenerIdstabla(){
+                const ids = $(".ids").map(function(){
+                    return $(this).val();
+                }).get();
+                return ids;
+            }
+            async function enviarIds(ids){
+                var data = JSON.stringify(ids);
+                await fetch(urlOrdenar,{
+                    method: 'POST', 
+                    body: data,
+                    headers: {'Content-Type': 'application/json'}
+                });
+            }
+        })
+    </script>
+
+}

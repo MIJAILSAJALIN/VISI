@@ -1,0 +1,148 @@
+﻿@model ListadoAlbaranesViewModel
+
+@{
+    ViewData["Title"] = "Módulo de albaranes";
+}
+
+<h1>Módulo de Albaranes</h1>
+<br />
+
+@*
+<form>
+    <a  asp-controller="Albaranes" asp-action="Nuevo" class="btn btn-primary mb-3">Nuevo Albaran</a>
+</form>
+*@
+<body style="background-color:#87CEEB">
+    <form name="f1" asp-controller="Albaranes" class="input_container" asp-route-id="@Model">
+        <div class="mb-2 m-1">
+
+            <button asp-controller="Albaranes" asp-action="Nuevo" class="btn btn-success">
+                Nuevo Albarán <i class="bi bi-file-earmark-plus"></i>
+            </button>
+            <button asp-action="Index" method="post" class="btn btn-primary" type="submit" name="buscar" id="buscar"> 
+                Buscar <i class="bi bi-search"></i>
+            </button>
+            <button asp-controller="Home" asp-action="Inicio" method="post" type="submit" class="btn btn-primary" name="Salir" id="Salir">Salir</button>
+            <a class="btn btn-secondary" asp-controller="Home" asp-action="Inicio">Cancelar</a>
+        </div>
+
+        <div class="input-group mb-3 align-self-center">
+                    <label asp-for="desdeFecha" class="input-group-text"></label>
+                    <input type="date" asp-for="desdeFecha" class="input_container" onchange="refresca()" />
+                    <span asp-validation-for="desdeFecha" class="text-danger"></span>
+
+
+                    <label asp-for="hastaFecha" class="input-group-text"></label>
+                    <input type="date" asp-for="hastaFecha" class="input_container" onchange="refresca()" />
+                    <span asp-validation-for="hastaFecha" class="text-danger"></span>
+
+                
+
+                    <label asp-for="ClienteId" class="input-group-text ">Cliente:</label>
+                    <select asp-for="ClienteId" asp-items="Model.ClientesSelector" class="form-select" 
+                         style="width:min-content" onchange="refresca()">
+                    </select>
+
+        </div>
+
+        <partial name="_paginacion" />
+    
+    </form>
+
+
+
+    @if (Model.listado is not null ) 
+{
+
+    <div class="accordion miacordeon">
+        @foreach (var linea in Model.listado.OrderBy(x => x.Numero))
+            {
+            <div class="accordion-item">
+                <h3 class="accordion-header" id="cabecera1">
+                    @{
+                        var id = "aa"+linea.Numero.ToString();
+                        var dataBSTarget = "#" + id;
+                    }
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                    data-bs-target="@dataBSTarget" data-bs-parent="dataBSTarget">
+                        <span class="me-3">
+                            <td>
+                                <a class="btn-danger btn" asp-action="Modificar" asp-route-Id="@linea.Numero" >
+                                    <i class="bi-pencil-fill"></i>
+                                </a>
+
+                            </td>
+                            <td>
+                                <span><strong> Nº: @linea.Numero </strong></span>
+                            </td>
+                            <td>
+                                <span><strong> Fecha: @linea.Fecha.ToString("dd/MM/yyyy") </strong></span>
+                            </td>
+                            <td>
+                                <span>         @linea.ClienteNombre </span>
+                            </td>
+                            <td>
+                                <span>Base Imponible: @linea.BaseImponible</span>
+                            </td>
+                        </span>
+                    </button>                  
+                </h3>
+                <div id="@id" class="accordion-collapse collapse "    >
+                        <div>
+                            <ul class="list-group">
+                            @foreach (var detalles in linea.Detalles)
+                            {
+                                <li class="list-group-item m-2">
+                                    <strong>
+                                        <td>
+                                            @detalles.LineaNum 
+                                        </td>
+                                        <td>
+                                            @detalles.Descripcion
+                                        </td>
+                                        <td>
+                                            @detalles.Cantidad 
+                                        </td>
+                                        <td>
+                                            @detalles.Precio 
+                                        </td>
+                                        <td>
+                                            @(detalles.Precio*detalles.Cantidad)
+                                        </td>
+                                    </strong>
+                                </li>
+                                
+                            }
+                            </ul>
+                        </div>
+                    </div>
+            </div>
+        }
+
+    </div>
+}
+
+</body>
+
+@section scripts{
+        <script>
+            $("#cantidadRegistrosPorPagina").change(function () {
+                
+                var input = document.getElementById("RegPagina");
+                input.value = $(this).val();
+                refresca();
+
+            });
+
+            function alerta(a) {
+               //alert("hola");
+                var inputNombre = document.getElementById("Pagina");
+                inputNombre.value = a;
+                                
+            }
+            function refresca(){
+                document.getElementById("Pagina").value = 1;
+                document.getElementById("buscar").click();
+            }
+        </script>
+}

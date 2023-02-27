@@ -1,0 +1,66 @@
+﻿@model RegistroViewModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="/css/visi.css" media="screen" />
+</head>
+
+<div class="background-wrap">
+    <div class="background"></div>
+</div>
+
+<h2>
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+</h2>
+
+
+<div class="card">
+    <div class="card-body">
+
+
+        <form asp-controller="Usuarios" asp-action="Registro" method="post">
+            <h1 id="litheader">VISI CERRAJEROS (REGISTRO)</h1>
+            <div class="inset">
+                <p>
+                    <input type="text" name="Email" id="Email" placeholder="Email">
+                </p>
+                <p>
+                    <input type="password" name="Password" id="Password" placeholder="Clave">
+                </p>
+                <div style="text-align: center;">
+                    <div class="checkboxouter">
+                        <input type="checkbox" name="Rememberme" id="Rememberme" asp-for="Rememberme">
+                        <label class="checkbox"></label>
+
+                    </div>
+                    <label for="Rememberme">Recuérdame por 14 días</label>
+                </div>
+                <input class="loginLoginValue" type="hidden" name="service" value="login" />
+            </div>
+            <p class="p-container">
+                <input type="submit">
+            </p>
+            <a class="btn btn-success" asp-action="Login">Usar cuenta existente...</a>
+
+        </form>
+
+
+    </div>
+
+</div>
+
+
+
+
+<body>
+    <p>
+        <br>
+    </p>
+</body>
+</html>

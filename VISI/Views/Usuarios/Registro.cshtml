@@ -1,0 +1,49 @@
+﻿@model RegistroViewModel
+@{
+    ViewData["Title"] = "Registro";
+}
+<h1>Regístrate</h1>
+<h2>
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+</h2>
+<br />
+<br />
+<br />
+
+<div class="card">
+    <div class="card-body">
+
+        <form asp-controller="Usuarios" asp-action="Registro" method="post">
+            <h1 id="litheader">VISI CERRAJEROS     REGISTRO</h1>
+            <div class="inset">
+                <div>
+                    <label asp-for="Email" class="form-label"></label>
+                    <input asp-for="Email" autocomplete="off" class="form-control" placeholder="Email" /> 
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div>
+                    <label asp-for="Password" class="form-label"></label>
+                    <input asp-for="Password" class="form-control" placeholder="Email" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+                <p>
+                    <input type="checkbox" name="Rememberme" id="Rememberme" asp-for="Rememberme">
+                    <label class="checkbox"></label>
+                    <label class="form-check-label" asp-for="Rememberme">Recuérdame</label>
+                </p>
+                    <button class="btn-primary btn">Regístrate</button>
+                    <a class="btn btn-success" asp-action="login">Deseo loguearme</a>
+
+                    <a class="btn btn-success" asp-action="LoginExterno" asp-route-proveedor="Microsoft">
+                        <i class="bi bi-microsoft"></i>    Registrar con Microsoft
+                    </a>
+
+            </div>
+        </form>
+
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

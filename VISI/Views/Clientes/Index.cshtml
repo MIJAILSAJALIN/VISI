@@ -1,0 +1,48 @@
+﻿@model IEnumerable<Clientes>
+@{
+    ViewData["Title"] = "Listado de Clientes";
+}
+
+<h1>Listado de Clientes @ViewBag.filtro</h1>
+
+    
+       
+        
+<tr>
+    <td>
+        <a asp-controller="Clientes" asp-action="Alta_Cliente" class="btn btn-primary mb-3">Nuevo Cliente</a>
+    </td>
+    <td>
+        <a asp-controller="Clientes" asp-action="Clientes" class="btn btn-primary mb-3">Imprimir</a>
+    </td>
+
+</tr>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Acciones</th>
+            <th>Nombre</th>
+            <th>Nif</th>
+            <th>Teléfono</th>
+            <th>Contacto</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var clientes in Model)
+        {
+            <tr>
+                <td>
+                    <a class="btn btn-primary" asp-controller="Clientes" asp-action="EditarCliente" asp-route-id="@clientes.Id">Editar</a>
+                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@clientes.Id" >Borrar</a>
+                </td>
+               
+                <td>  @clientes.Nombre  </td>
+                <td>  @clientes.Nif   </td>
+                <td>  @clientes.Telefono  </td>
+                <td>  @clientes.Contacto  </td>
+            </tr>
+        }
+    </tbody>
+    
+</table>

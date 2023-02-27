@@ -1,0 +1,13 @@
+﻿@model formasDePago
+@{
+    ViewData["Title"] = "Borrar Forma de pago";
+}
+
+<h4 class="mb-3">Confirme eliminación de la forma de pago "@Model.Descripcion"</h4>
+
+<form asp-action="deleteFpg">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Eliminar</button>
+    <a class="btn btn-secondary" asp-action="FormasPago">Cancelar</a>
+
+</form> 
