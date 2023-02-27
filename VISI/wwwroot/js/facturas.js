@@ -28,9 +28,11 @@ async function grabarFactura() {
     else {
         alert("voy a grabar la factura");
     }
-    
+
     //const data = JSON.stringify(facturaListadoViewModel.facturas()[0].descripcion());
-    const data = "hola";
+    const data = (JSON.stringify({ "misdatos":"una mierda"}));
+    
+    //const data = JSON.stringify("hola");
     alert(data);
     const respuesta = await fetch(urlFactura, {
         method: 'POST',
@@ -44,6 +46,7 @@ async function grabarFactura() {
         const json = respuesta.json();
     } else {
         alert("E R R O R");
+        alert(respuesta.status);
     }
 
 
