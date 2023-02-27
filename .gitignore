@@ -362,3 +362,4 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 /VISI/Controllers/FacturasController.cs
+/VISI/Controllers/FacturasAPIController.cs

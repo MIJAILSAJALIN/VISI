@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using VISI.Entidades;
 using VISI.Servicios;
@@ -6,8 +7,9 @@ using VISI.Servicios;
 namespace VISI.Controllers
 {
 
-    //[ApiController]
-    [Route("api/facturas")]
+   // [ApiController]
+
+    [Route("api/facturasAPI")]
     public class FacturasAPIController : ControllerBase
     {
         private readonly ApplicationDbContext context;
@@ -18,11 +20,12 @@ namespace VISI.Controllers
             this.context = context;
             this.repositorioUsuarios = repositorioUsuarios;
         }
-
+        //[AllowAnonymous]
         //[HttpPost(Name = "api/facturas")]        
         [HttpPost]
         public async Task<ActionResult<Factura>> Post([FromBody] string misdatos)
         {
+            
             var usuarioId = repositorioUsuarios.ObtenerUsuarioId();
             var lastNumFactura = await context.VISI_Facturas.Select(n => n.Numero).MaxAsync(); //obtenemos el último número de factura
 
