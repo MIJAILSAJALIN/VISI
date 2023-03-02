@@ -9,7 +9,7 @@ table {
     font-size: 0.8rem;
 /*    table-layout: fixed;
     width: 800px;
-    */
+*/    
 }
 thead {
     text-align: center;
@@ -18,11 +18,12 @@ thead {
 td, th {
     border: 1px solid rgb(190,190,190);
     padding: 10px 20px;
-    width: 100px;
+    width: 500px;
 }
-#descrip {
-    width: 600px;
-    text-align: start;
+.descrip {
+    width: 1500px;
+/*    width: stretch;
+*/    text-align: start;
 }
 .numer {
     text-align: right;

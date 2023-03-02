@@ -7,7 +7,7 @@
         ++indi;
     };
     
-    console.log(indi);
+    //console.log(indi);
     facturaListadoViewModel.facturas.push(new facturaViewModel({ id: indi, numero: 0, descripcion: `nueva línea ${indi}`, precio: 0, cantidad: 0 }));
     
     $("[name=descri]").last().focus();
@@ -21,19 +21,30 @@ function manejarSalidaFocus(factura) {
 }
 
 async function grabarFactura() {
-    facturaListadoViewModel.facturas().forEach(f => console.log(f.descripcion()));
+    //facturaListadoViewModel.facturas().forEach(f => console.log(f.descripcion()));
     if (facturaListadoViewModel.facturas().length == 0) {
         alert("La factura no tiene líneas de detalle, no se puede grabar");
+        return;
     }
-    else {
-        alert("voy a grabar la factura");
-    }
+   
 
-    //const data = JSON.stringify(facturaListadoViewModel.facturas()[0].descripcion());
-    const data = (JSON.stringify({ "misdatos":"una mierda"}));
-    
-    //const data = JSON.stringify("hola");
-    alert(data);
+    var listado = [];
+    var a = 0;
+    facturaListadoViewModel.facturas().forEach(x => listado.push({
+        descripcion: x.descripcion(), precio: x.precio(), cantidad: x.cantidad(),
+        lineanumero: ++a
+    }));
+
+    const data = JSON.stringify({
+        LineasFacturas: listado,
+        
+        clienteId: clienteIdOculto.value,
+        Fecha: Fechafac.value
+        //Subtotal: sumaTotal.value
+        
+    });
+
+
     const respuesta = await fetch(urlFactura, {
         method: 'POST',
         body: data,
@@ -43,7 +54,10 @@ async function grabarFactura() {
     });
     //alert(respuesta);
     if (respuesta.ok) {
-        const json = respuesta.json();
+        const json = await respuesta.json();
+        numeroFactura.value = json;
+        alert("Se ha grabado la factura nº: "+json);
+        //console.log(json);        
     } else {
         alert("E R R O R");
         alert(respuesta.status);

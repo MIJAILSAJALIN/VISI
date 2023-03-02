@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using DocumentFormat.OpenXml.Office2013.Excel;
+using System.ComponentModel.DataAnnotations;
 
 namespace VISI.Entidades
 {
@@ -10,14 +11,16 @@ namespace VISI.Entidades
         public DateTime Fecha { get; set; } = DateTime.Now;
         public uint ClienteId { get; set; }
         [StringLength(50)]
-        [Required]
         public string FormaDePago { get; set; }
         public uint AdministradorId { get; set; }
         public bool Pagada { get; set; }
         public float TipoDeIva { get; set; }
-        public decimal Subtotal { get; set; }
+        public decimal Subtotal { get; set; } 
+        //private decimal miSubtotal  => LineasFacturas.Sum(x => (x != null ? x.Precio * x.Cantidad : 0));
+        //si intento calcular el resultado no se me graba en la base de datos, será cosa de Entity...
         public List<LineasFactura> LineasFacturas { get; set; }
         public List<ArchivoAdjuntoFactura> ArchivoAdjuntoFactura { get; set; }
     }
+    
 
 }

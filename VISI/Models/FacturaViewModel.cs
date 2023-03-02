@@ -23,4 +23,9 @@ namespace VISI.Models
         //meter la funcion Rellena..en la carpeta de servicios, en repositorioClientes...y quitarlo de aquí...
 
     }
+    public class FacturaViewBorra
+    {
+        public Factura Factura { get; set; }
+        public List<LineasFactura> LineasFacturas { get; set; } = new List<LineasFactura>();
+    }
 }

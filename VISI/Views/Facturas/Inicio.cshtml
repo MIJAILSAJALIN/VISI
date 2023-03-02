@@ -22,8 +22,8 @@
         <link rel='stylesheet' href='~/css/estiloTabla.css'>
 </head>
 
-
 <body>
+
 
     <div>
             <form name="f1" asp-controller="Facturas"  asp-route-id="@Model" method="post">
@@ -31,16 +31,17 @@
 
 
                         <label asp-for="Numero" class="input-group-text"></label>
-                        <input type="text" asp-for="Numero" class="input_container" />
+                        <input type="text" asp-for="Numero" class="input_container" disabled id="numeroFactura"/>
                         <span asp-validation-for="Numero" class="text-danger"></span>
 
    
                         <label asp-for="Fecha" class="input-group-text "></label>
-                        <input type="date" asp-for="Fecha" class="input_container " />
+                        <input type="date" asp-for="Fecha" id="Fechafac" class="input_container " />
                         <span asp-validation-for="Fecha" class="text-danger"></span>
  
     
                         <label asp-for="ClienteId" class="input-group-text ">Cliente:</label>
+                        <input asp-for="ClienteId" type="hidden" id="clienteIdOculto" />
 
 
 
@@ -49,7 +50,7 @@
                         <datalist id="mili">
                             @foreach (var cliente in Model.ClientesSelector)
                             {
-                            <option value="@cliente.Text"></option>
+                            <option value="@cliente.Text">@cliente.Value</option>
                             }
                         </datalist>
                         <input asp-for="NombreCliente" type="hidden" id="clienteOculto" />
@@ -64,8 +65,6 @@
 
 
     <div id="contenedor-listado-facturas" >
-@*        <button data-bind="click: grabarFactura" type="button" class="btn btn-primary">Guardar</button>
-*@
 
 
         <div class="text-center">
@@ -73,11 +72,10 @@
                Añadir línea
             </button>
         </div>
-        <div class="text-end">
-            <input class="align-content-end" id="sumaTotal" contenteditable="false" /> 
 
+        <div class="text-end" >
+            <input class="align-content-end" id="sumaTotal" disabled /> 
         </div>
-
 
         <table class="tabla-lineas-factura" style="cursor: pointer" >
             <thead data-bind="hidden: noCab">
@@ -88,36 +86,29 @@
                         <td>Cantidad</td>
                         <td>Precio</td>
                         <td>Importe</td>
-
                     </tr>
             </thead>
 
             <tbody data-bind="foreach: facturas">
 
-                        <tr name="factura" contenteditable="true" >
-    
-                            <td id="id" data-bind="text: id" class="numer" contenteditable="false"> </td>
+                        <tr name="factura" contenteditable="false" >    
+                            <td id="id" data-bind="text: id" class="numer" > </td>
                             <td data-bind="text: numero" class="numer"> </td>
-                            <td> 
-                                <input id="descrip" name="descri" class="sinborde" data-bind="value: descripcion"/>
-                            </td>
-
-                            <td id="cant">
+                            <td class="descrip" > <input class="descrip" name="descri" data-bind="value: descripcion"/> </td>
+                            <td >
                         @*     <input class="numer" data-bind="value: cantidad, event: {change: manejarSalidaFocus}" />  *@                           
-                                    <input class="numer sinborde" data-bind="value: cantidad" />
+                                    <input type="number" id="cant" class="numer sinborde" data-bind="value: cantidad" />
                             </td>
-                            <td id="prec">
-                                    <input class="numer sinborde" data-bind="value: precio" />        
+                            <td >
+                                    <input type="number" id="prec" class="numer sinborde" data-bind="value: precio" />
                             </td>
-                            <td data-bind="text: subtotal" contenteditable="false"></td>
+                            <td data-bind="text: subtotal" ></td>
                             <td contenteditable="false">
                                  <i class="bi bi-trash3" data-bind="click: $parent.removeLine"></i>
                             </td>
 
-                        </tr>
-                  
-            </tbody>
-           
+                        </tr>                  
+            </tbody>           
         </table>
 
         <div data-bind="visible: noHayFacturas">        
@@ -139,7 +130,8 @@
     <script src="~/js/facturas.js" asp-append-version="true"></script>
 
     <script>
-        const urlFactura = "api/facturasAPI";
+        const urlFactura = "/api/facturasAPI";
+        var modal = @Html.Raw(Json.Serialize(Model.ClientesSelector));
     
         function alerta(){
 
@@ -156,10 +148,22 @@
         }
 
         function ActualizaCliente(){
+                        
+            for (var i in modal) {
+               
+               if (modal[i].text == miSel.value)
+               {
+                   //alert(modal[i].value);
+                   clienteIdOculto.value = modal[i].value;
+                   break;
+               }
+               
+            }
 
-            //tengo que ver como acceder desde Java al modelo para buscar el Id del Cliente...
-            clienteOculto.value = miSel.value;                            
-        }
+            clienteOculto.value = miSel.value;     
+            //alert(miSel.value);                                    
+                
+         }
 
         function facturaListadoViewModelFn()  
         {
@@ -205,8 +209,8 @@
             self.precio = ko.observable(precio);
             self.subtotal = ko.pureComputed(function() {                    
                     sumaTotal.value = obtenTotal();      
-                    console.log(`multiplicando ${self.cantidad()}`);
-                    console.log(`por ${self.precio()}`);
+                    //console.log(`multiplicando ${self.cantidad()}`);
+                    //console.log(`por ${self.precio()}`);
 
                     return self.cantidad() * self.precio();
             }, this);
