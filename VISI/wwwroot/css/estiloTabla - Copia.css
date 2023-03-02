@@ -1,40 +1,40 @@
-﻿html {
+﻿/*html {
     font-family: sans-serif;
 }
 
-table {
+*//*table {
     border-collapse: collapse;
     border: 2px solid rgb(200,200,200);
     letter-spacing: 1px;
-    font-size: 0.8rem;
+    font-size: 0.8rem;*/
 /*    table-layout: fixed;
     width: 800px;
 */    
-}
+/*}
 thead {
     text-align: center;
 }
 
-td, th {
+td, th {*/
     /*    border: 1px solid rgb(190,190,190);
 */
-    border: 5px solid rgb(209, 20, 154);
+    /*border: 5px solid rgb(209, 20, 154);
     padding: 10px 20px;
     width: 500px;
 }
 .descrip {
-    width: 1500px;
+    width: 1500px;*/
 /*    width: stretch;
-*/    text-align: start;
+*/    /*text-align: start;
 }
 .numer {
     text-align: right;    
 }
 
-th {
+th {*/
     /*    background-color: rgb(235,235,235);
 */
-    background-color: rgb(209, 20, 154);
+    /*background-color: rgb(209, 20, 154);
 }
 
 
@@ -42,16 +42,16 @@ td {
     text-align: start;    
 }
 
-tr:nth-child(even) td, input {
+tr:nth-child(even) td, input {*/
     /*    background-color: rgb(250,250,250);
 */
-    background-color: rgb(0, 148, 255);
+    /*background-color: rgb(0, 148, 255);
 }
 
-tr:nth-child(odd) td, input {
+tr:nth-child(odd) td, input {*/
     /*    background-color: rgb(245,245,245);
 */
-    background-color: rgb(182, 255, 0);
+    /*background-color: rgb(182, 255, 0);
 }
 
 caption {
@@ -60,4 +60,4 @@ caption {
 .sinborde {
     border: 0;
     outline-width:inherit;
-}
+}*/
