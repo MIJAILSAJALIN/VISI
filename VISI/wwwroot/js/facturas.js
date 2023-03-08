@@ -64,23 +64,6 @@ function manejarSalidaFocus(factura) {
 
 async function grabarFactura() {
 
-    if (facturaListadoViewModel.facturas().length == 0) {
-        confirmarAccion({
-            titulo: '¿ Quiere modificar la factura ?',
-            icono: 'question',
-            callBackAceptar: () => {
-                console.log("bien...");
-                return;
-            },
-            callBackCancelar: () => {
-                console.log("bien CANCELAR");
-                return;
-            }
-        });
-
-
-    }
-
 
     if (facturaListadoViewModel.facturas().length == 0) {
         console.log("No hay líneas de detalle...");
@@ -102,18 +85,47 @@ async function grabarFactura() {
     }
    
 
-    confirmarAccion({
-        titulo: '¿ Quiere modificar la factura ?',       
-        icono: 'question',
-        callBackAceptar: () => {
-                console.log("Modificando la factura...");
-                return;
-        },
-        callBackCancelar: () => {
-                console.log("CANCELAR");
-                return;
-        }
+    //confirmarAccion({
+    //    titulo: '¿ Quiere modificar la factura ?',
+    //    icono: 'question',
+    //    callBackAceptar: () => {
+    //            console.log("Modificando la factura...");
+    //            return;
+    //    },
+    //    callBackCancelar: () => {
+    //            console.log("CANCELAR");
+    //            return;
+    //    }
+    //});
+    Swal.fire(
+        'ERROR',
+        'porque no furula ?',
+        'error'
+    );
+
+
+    Swal.fire({
+        title: 'Confirme por favor...',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#27AE60',
+        cancelButtonColor: '#E74C3C',
+        confirmButtonText: 'Aceptar',
+        focusConfirm: true
+    }).then((respuesta) => {
+        console.log("estoy en el then de la función");
+        //if (respuesta.isConfirmed) {
+
+        //    console.log("confirmada...");
+
+        //} 
+
+        //console.log("saliendo de confirmada...");
+
     });
+
+
+
 
     var listado = [];
     var a = 0;

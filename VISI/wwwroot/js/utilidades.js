@@ -1,5 +1,5 @@
 ﻿function confirmarAccion({ titulo, icono, callBackAceptar, callBackCancelar }) {
-    //alert("estoy en confirmaraccion");
+    alert("estoy en confirmaraccion");
     Swal.fire({
         title: titulo || 'Confirme por favor...',
         icon: icono || 'warning',
