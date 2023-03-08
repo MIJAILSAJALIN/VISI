@@ -47,7 +47,8 @@ namespace VISI.Servicios
             if (httpContext.User.Identity.IsAuthenticated)
             {
                 var idClaim = httpContext.User.Claims.Where(t => t.Type == ClaimTypes.NameIdentifier).FirstOrDefault();
-                return idClaim.Value;
+                
+                return (idClaim.Value);
             }
             else
             {

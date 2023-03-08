@@ -46,7 +46,7 @@ builder.Services.PostConfigure<CookieAuthenticationOptions>(IdentityConstants.Ap
 
 
 builder.Services.AddTransient<IRepositorioClientes, RepositorioClientes>();
-//builder.Services.AddTransient<IRepositorioUsuarios,RepositorioUsuarios>();
+builder.Services.AddTransient<IRepositorioUsuarios,RepositorioUsuarios>();
 builder.Services.AddTransient<IRepositorioOtros,RepositorioOtros>();
 builder.Services.AddTransient<IRepositorioAlbaranes,RepositorioAlbaranes>();
 builder.Services.AddHttpContextAccessor();

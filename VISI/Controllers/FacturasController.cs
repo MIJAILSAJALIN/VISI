@@ -24,9 +24,11 @@ namespace VISI.Controllers
         [HttpGet]
         public async Task<IActionResult> Inicio()
         {
-            var modelo = new FacturaViewModel();            
+
+            var modelo = new FacturaViewModel();
             modelo.ClientesSelector = await repositorioClientes.RellenaSelectorClientes(false);
             return View(modelo);
+
         }
         [HttpPost]
         public async Task<IActionResult> Inicio(FacturaViewModel facturaViewModel)

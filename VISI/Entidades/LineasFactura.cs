@@ -11,8 +11,8 @@ namespace VISI.Entidades
         [StringLength(250)]
         [Required]
         public string Descripcion { get; set; }
-        public int Cantidad { get; set; }
-        public int Precio { get; set; }
+        public decimal Cantidad { get; set; }
+        public decimal Precio { get; set; }
 
 
     }

@@ -53,8 +53,8 @@
                             <option value="@cliente.Text">@cliente.Value</option>
                             }
                         </datalist>
-                        <input asp-for="NombreCliente" type="hidden" id="clienteOculto" />
-                </div>
+@*                        <input asp-for="NombreCliente" type="hidden" id="clienteOculto" />
+*@                </div>
 
                 <a class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#ModalSalir">Cancelar</a>
                 <button asp-action="borrame" onclick="grabarFactura()" type="button" class="btn btn-primary">Guardar</button>
@@ -77,7 +77,7 @@
             <input class="align-content-end" id="sumaTotal" disabled /> 
         </div>
 
-        <table class="tabla-lineas-factura" style="cursor: pointer" >
+        <table name="mitabla" class="tabla-lineas-factura" style="cursor: pointer" >
             <thead data-bind="hidden: noCab">
                     <tr class="fw-bold" style="text-align:center">
                         <td> hola </td>
@@ -88,19 +88,21 @@
                         <td>Importe</td>
                     </tr>
             </thead>
-
+            
             <tbody data-bind="foreach: facturas">
-
-                        <tr name="factura" contenteditable="false" >    
+                        
+                        <tr name="factura" contenteditable="false" class="sinborde" >    
                             <td id="id" data-bind="text: id" class="numer" > </td>
                             <td data-bind="text: numero" class="numer"> </td>
-                            <td class="descrip" > <input class="descrip" name="descri" data-bind="value: descripcion"/> </td>
+                                <td class="descrip"> <input class="descrip sinborde" name="descri" data-bind="value: descripcion" /> </td>
                             <td >
                         @*     <input class="numer" data-bind="value: cantidad, event: {change: manejarSalidaFocus}" />  *@                           
                                     <input type="number" id="cant" class="numer sinborde" data-bind="value: cantidad" />
                             </td>
                             <td >
-                                    <input type="number" id="prec" class="numer sinborde" data-bind="value: precio" />
+@*                                    <input type="number" id="prec" class="numer sinborde" data-bind="value: precio, event: {focusout: manejarSalidaFocus}" />
+onkeydown*@
+                                <input name="prec" type="number" id="prec" class="numer sinborde" data-bind="value: precio" onkeydown="onKeyDownHandler()"/>
                             </td>
                             <td data-bind="text: subtotal" ></td>
                             <td contenteditable="false">
@@ -125,14 +127,34 @@
 </body>
 
 
+
+
 @section Scripts{
 
     <script src="~/js/facturas.js" asp-append-version="true"></script>
+    <script src="~/js/utilidades.js" asp-append-version="true"></script>
+
+   
 
     <script>
         const urlFactura = "/api/facturasAPI";
-        var modal = @Html.Raw(Json.Serialize(Model.ClientesSelector));
+        const clientesSelector = @Html.Raw(Json.Serialize(Model.ClientesSelector));
+        
     
+        function onKeyDownHandler(){
+              //console.log("key pressed ",  String.fromCharCode(event.keyCode));
+
+              if (event.keyCode === 13 || event.keyCode === 9 ){
+                  console.log("pulso enter o tab");
+                 
+              
+                //esto por ahora tengo que dejarlo aparcado, cuesta mucho sin formación
+                //si estamos en el último componente...
+
+                AgregarLinea();
+              }
+        }
+
         function alerta(){
 
             //alert('estoy en alerta ');
@@ -147,29 +169,22 @@
             //console.log(Object.values(miSel));
         }
 
-        function ActualizaCliente(){
-                        
-            for (var i in modal) {
-               
-               if (modal[i].text == miSel.value)
-               {
-                   //alert(modal[i].value);
-                   clienteIdOculto.value = modal[i].value;
-                   break;
-               }
-               
-            }
-
-            clienteOculto.value = miSel.value;     
-            //alert(miSel.value);                                    
-                
+        function ActualizaCliente(){   
+            //'clientesSelector' contiene el selector de clientes heredado del modelo, asignado al principio del script
+            const i = clientesSelector.findIndex(c => c.text == miSel.value);
+            if (i == -1) {
+                clienteIdOculto.value = 0
+            } 
+            else {
+                clienteIdOculto.value = clientesSelector[i].value;
+            }                        
          }
 
         function facturaListadoViewModelFn()  
         {
             var self = this;
             self.facturas = ko.observableArray([]);
-            self.cargando = ko.observable(true);
+            self.cargando = ko.observable(false);
             self.removeLine = function (linea) { 
                 self.facturas.remove(linea) ;
                 var a = 0;
@@ -220,9 +235,9 @@
 
         }
         const   facturaListadoViewModel = new facturaListadoViewModelFn();
-        setTimeout(() => {
-                facturaListadoViewModel.cargando(false);
-        }, 1000)
+        //setTimeout(() => {
+        //        facturaListadoViewModel.cargando(false);
+        //}, 1000)
 
         ko.applyBindings(facturaListadoViewModel, document.getElementById('contenedor-listado-facturas'));
 
