@@ -10,8 +10,8 @@
 //    if (evt.key !== 'Enter') {
 //        return;
 //    }
-    
- 
+
+
 
 //    let element = evt.target;
 
@@ -32,14 +32,7 @@
 //        event.preventDefault();
 //    }
 //});
-
-
-
-
-
-
-
-
+// *********************************************************************************************
 function AgregarLinea() {
     
     var lon = facturaListadoViewModel.facturas().length - 1;
@@ -49,24 +42,22 @@ function AgregarLinea() {
         ++indi;
     };
     
-    //console.log(indi);
     facturaListadoViewModel.facturas.push(new facturaViewModel({ id: indi, numero: 0, descripcion: `nueva línea ${indi}`, precio: 0, cantidad: 0 }));
     
     $("[name=descri]").last().focus();
-
 }
+// *********************************************************************************************
 function manejarSalidaFocus(factura) {
     alert("estoy en el evento");
     console.log(factura.subtotal());
    // facturaListadoViewModel.cargando(true);
     return factura.subtotal();
 }
-
-async function grabarFactura() {
+// *********************************************************************************************
+ async function grabarFactura() {
 
 
     if (facturaListadoViewModel.facturas().length == 0) {
-        console.log("No hay líneas de detalle...");
         Swal.fire(
             'ERROR',
             'La factura no tiene líneas de detalle, no se puede grabar.',
@@ -75,7 +66,6 @@ async function grabarFactura() {
         return;
     }
     if (clienteIdOculto.value == 0) {
-        console.log("No ha seleccionado ningún cliente...");
         Swal.fire(
             'ERROR',
             'Debe seleccionar un cliente.',
@@ -83,52 +73,29 @@ async function grabarFactura() {
         );
         return;
     }
-   
 
-    //confirmarAccion({
-    //    titulo: '¿ Quiere modificar la factura ?',
-    //    icono: 'question',
-    //    callBackAceptar: () => {
-    //            console.log("Modificando la factura...");
-    //            return;
-    //    },
-    //    callBackCancelar: () => {
-    //            console.log("CANCELAR");
-    //            return;
-    //    }
-    //});
-    Swal.fire(
-        'ERROR',
-        'porque no furula ?',
-        'error'
-    );
+     let titulo = "creación";
+     if (numeroFactura.value > 0) {
+         //se puede controlar que si no ha habido cambios no se haga la llamada a la API
+         titulo = "modificación";
+     }
 
 
-    Swal.fire({
-        title: 'Confirme por favor...',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#27AE60',
-        cancelButtonColor: '#E74C3C',
-        confirmButtonText: 'Aceptar',
-        focusConfirm: true
-    }).then((respuesta) => {
-        console.log("estoy en el then de la función");
-        //if (respuesta.isConfirmed) {
+     let accion = await confirmarAccion({
+         titulo: `Confirme la ${titulo} de la factura...`,
+         icono: 'question',
+         callBackAceptar: () => {
+         },
+         callBackCancelar: () => {
+         }
+     });
+     if (!accion) {
+         swal.fire("Atención", `Se ha cancelado la acción`, "warning");
+         return;
+     }
 
-        //    console.log("confirmada...");
-
-        //} 
-
-        //console.log("saliendo de confirmada...");
-
-    });
-
-
-
-
-    var listado = [];
-    var a = 0;
+    let listado = [];
+    let a = 0;
     facturaListadoViewModel.facturas().forEach(x => listado.push({
         descripcion: x.descripcion(), precio: x.precio(), cantidad: x.cantidad(),
         lineanumero: ++a
@@ -149,19 +116,21 @@ async function grabarFactura() {
             'Content-Type': 'application/json'
         }
     });
-    //alert(respuesta);
     if (respuesta.ok) {
         const json = await respuesta.json();
         numeroFactura.value = json;
-        swmensaje("Se ha grabado la factura nº: " + json,'success');
-        
-        //console.log(json);        
+        swmensaje("Se ha grabado la factura nº: " + json,'success');       
     } else {
-        alert("E R R O R");
-        alert(respuesta.status);
+        Swal.fire(
+            'Se ha producido un error inesperado',
+            `Código: ${ respuesta.status }`,
+            'error'
+        );
+        console.log(respuesta.status);
     }
 
 }
+// *********************************************************************************************
 function swmensaje(mensaje, icono) {
     Swal.fire({
         title: mensaje,

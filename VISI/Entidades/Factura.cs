@@ -1,5 +1,6 @@
 ﻿using DocumentFormat.OpenXml.Office2013.Excel;
 using System.ComponentModel.DataAnnotations;
+using VISI.Migrations;
 
 namespace VISI.Entidades
 {

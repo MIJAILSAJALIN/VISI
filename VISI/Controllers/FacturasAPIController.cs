@@ -34,7 +34,6 @@ namespace VISI.Controllers
         public async Task<ActionResult<Factura>> Post([FromBody] Factura factura)
         {
             var usuarioId =  repositorioUsuarios.ObtenerUsuarioId();
-
             factura.Subtotal = factura.LineasFacturas.Sum(x => (x != null ? x.Precio * x.Cantidad : 0));
             //si hago un campo calculado no se graba por el tema de entity, supongo...
             if (factura.Numero == 0)
@@ -45,12 +44,10 @@ namespace VISI.Controllers
             }   
             else   //la factura se está modificando...
             {
-                var facturaOriginal =  await context.VISI_Facturas.FirstOrDefaultAsync(f=> f.Numero == factura.Numero) ;                
+                Factura facturaOriginal =  await context.VISI_Facturas.Include(f=>f.LineasFacturas).FirstOrDefaultAsync(f=> f.Numero == factura.Numero) ;                
                 var oldId = facturaOriginal.Id;
-                //facturaOriginal.LineasFacturas = context.VISI_LineasFactura.Where(x => x.Factura.Numero == facturaOriginal.Numero).ToList();
-                // no entiendo xq tengo que cargar yo los detalles de las facturas...xq no se cargan automáticamente al cargar la Factura ?
                 mapper.Map(factura, facturaOriginal);
-                facturaOriginal.Id= oldId;
+                facturaOriginal.Id = oldId;
             }
             
             await context.SaveChangesAsync();            
