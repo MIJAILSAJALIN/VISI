@@ -7,18 +7,22 @@ using Microsoft.Identity.Client;
 using System.Diagnostics;
 using VISI.Models;
 using VISI.Servicios;
+//using VISI.Entidades;
 
 namespace VISI.Controllers
 {
     public class ClientesController : Controller
     {
+        //private readonly ApplicationDbContext context;
         private readonly ILogger<HomeController> _logger;
         private readonly IRepositorioClientes repositorioClientes;
         private readonly IRepositorioOtros repositorioOtros;
 
+        //public ClientesController(ApplicationDbContext context, ILogger<HomeController> logger, IRepositorioClientes repositorioClientes,
         public ClientesController(ILogger<HomeController> logger, IRepositorioClientes repositorioClientes,
-                                  IRepositorioOtros repositorioOtros)
+              IRepositorioOtros repositorioOtros)
         {
+        //    this.context = context;
             _logger = logger;
             this.repositorioClientes = repositorioClientes;
             this.repositorioOtros = repositorioOtros;

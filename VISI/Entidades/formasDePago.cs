@@ -1,8 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using VISI.Migrations;
 
-namespace VISI.Models
+namespace VISI.Entidades
 {
-    
+    // definido en modelos...
+    /*
     public class formasDePago
     {
         [StringLength(maximumLength: 30)]
@@ -11,5 +13,5 @@ namespace VISI.Models
         public string Descripcion { get; set; }
         public int orden { get; set; }
     }
-    
+    */
 }

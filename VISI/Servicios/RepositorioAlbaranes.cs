@@ -37,7 +37,7 @@ namespace VISI.Servicios
             alb.Numero = NumeroAlbaran;
             
             await conexion.ExecuteAsync(@"INSERT INTO VISI_albaranes (Numero, Fecha, ClienteId, BaseImponible) 
-                    VALUES (@Numero, @Fecha, @ClienteId, @BaseImponible)", alb);
+                    VALUES (@Numero, @Fecha, @ClienteId, @BaseImponible1)", alb);
 
             alb.Detalles.RemoveAll(d => (string.IsNullOrWhiteSpace(d.Descripcion))&&
                     (string.IsNullOrEmpty(d.Descripcion) && (d.Cantidad ==0) && (d.Precio==0) )) ;

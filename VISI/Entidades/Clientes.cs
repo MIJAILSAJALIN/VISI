@@ -1,15 +1,17 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using DocumentFormat.OpenXml.Wordprocessing;
 using System.ComponentModel.DataAnnotations;
-using VISI.Entidades;
+using VISI.Migrations;
 
-namespace VISI.Models
+
+namespace VISI.Entidades
 {
-   
-    
-    public class Clientes //: IValidatableObject        interface para validar a nivel de la clase
+    // definida en modelos...
+
+    /*
+    public class xxdbClientes //: IValidatableObject        interface para validar a nivel de la clase
     {
-        public int Id { get; set; }
+        
+        public int Id { get; set; }        
         [Required(ErrorMessage = " El campo '{0}' es requerido.")]
         [StringLength(maximumLength: 50, ErrorMessage = "La longitud no puede superar los {1} caracteres.")]
         [Display(Name = "Nombre del cliente")]
@@ -38,27 +40,8 @@ namespace VISI.Models
         [EmailAddress(ErrorMessage = "El formato no es válido.")]
         [StringLength(maximumLength: 50)]
         public string Email { get; set; }
-
-        //public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
-        //{
-        //    //aquí puedo hacer validaciones complejas a nivel de toda clase a la vez en lugar de un único campo
-        //    if (string.IsNullOrEmpty(Nombre))           
-        //    {
-        //        yield return new ValidationResult("El nombre no puede estar en blanco",new[]
-        //        { nameof(Nombre) });
-        //        // si no paso el nombre del campo daría un error a nivel del modelo
-        //    }            
-        //    //throw new NotImplementedException();
-        //    yield break;
-        //}
+        
+      
     }
-    
-    
-    public class ClientesViewModel : Clientes 
-    {
-        public IEnumerable<SelectListItem> FormasPago { get; set;}
-
-    }
-
-
+    */
 }

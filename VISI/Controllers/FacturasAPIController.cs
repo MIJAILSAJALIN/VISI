@@ -36,6 +36,7 @@ namespace VISI.Controllers
             var usuarioId =  repositorioUsuarios.ObtenerUsuarioId();
             factura.Subtotal = factura.LineasFacturas.Sum(x => (x != null ? x.Precio * x.Cantidad : 0));
             //si hago un campo calculado no se graba por el tema de entity, supongo...
+            //hay que averiguar más cosas...
             if (factura.Numero == 0)
             {
                 uint lastNumFactura  = await context.VISI_Facturas.Select(f=>f.Numero).DefaultIfEmpty().MaxAsync();

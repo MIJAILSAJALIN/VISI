@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VISI.Entidades;
 
@@ -11,9 +12,11 @@ using VISI.Entidades;
 namespace VISI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231114231455_albaranes2")]
+    partial class albaranes2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -325,7 +328,7 @@ namespace VISI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
 
-                    b.Property<decimal?>("BaseImponible")
+                    b.Property<decimal>("BaseImponible")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("ClienteId")
@@ -346,7 +349,7 @@ namespace VISI.Migrations
                     b.Property<bool?>("SeImprime")
                         .HasColumnType("bit");
 
-                    b.Property<decimal?>("TipoIva")
+                    b.Property<decimal>("TipoIva")
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("id");

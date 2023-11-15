@@ -2,8 +2,10 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Data.SqlClient;
 using System.Reflection.Metadata.Ecma335;
+using VISI.Entidades;
 using VISI.Models;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+
 
 namespace VISI.Servicios
 {

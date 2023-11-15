@@ -23,12 +23,11 @@ namespace VISI.Models
         public int ClienteId { get; set; }
         
         public string ClienteNombre { get; set; }
-        public bool SeImprime { get; set; }
+        public bool? SeImprime { get; set; } = true;
         [Display(Name = "Nº de factura")]
-
-        public int NumFactura { get; set; }
-        public decimal TipoIva { get; set; }
-        public decimal BaseImponible { get; set; }
+        public int? NumFactura { get; set; }
+        public decimal? TipoIva { get; set; } 
+        public decimal? BaseImponible { get; set; } 
     }
     public class Albaranes_detalle
     {
@@ -41,7 +40,7 @@ namespace VISI.Models
         [StringLength(maximumLength: 100)]
         public string Descripcion { get; set; }
         public decimal Cantidad { get; set; }
-        [Range(-1000000, 1000000)]
+        [Range(-1000000.00, 1000000.99)]    //me da problemas con los decimales
         public decimal Precio { get; set; }
     }
     public class AlbaranesConDetalle : Albaranes
@@ -51,12 +50,13 @@ namespace VISI.Models
 
 
 
-        public new decimal BaseImponible => Detalles.Sum(x => (x != null ? x.Precio * x.Cantidad : 0));
-        
+        //public new decimal BaseImponible1 => Detalles.Sum(x => (x != null ? x.Precio * x.Cantidad : 0));
+        public decimal BaseImponible1 => Detalles.Sum(x => (x != null ? x.Precio * x.Cantidad : 0));
+
 
 
         //public IEnumerable<SelectListItem> ClientesSelector { get; set; }
-        
+
     }
     
 

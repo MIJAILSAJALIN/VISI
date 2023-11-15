@@ -1,5 +1,9 @@
 ﻿using Dapper;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using System.Linq.Dynamic.Core;
+using VISI.Entidades;
 using VISI.Models;
 
 namespace VISI.Servicios
@@ -16,21 +20,37 @@ namespace VISI.Servicios
     }
     public class RepositorioOtros : IRepositorioOtros
     {
+       
+
         private readonly string connectionString;
-        public RepositorioOtros(IConfiguration configuration)
+        private readonly ApplicationDbContext _context; // para usar EF *************************
+        public RepositorioOtros(IConfiguration configuration, ApplicationDbContext context)
         {
             connectionString = configuration.GetConnectionString("DefaultConnection");
+            _context = context; // para usar EF *************************
         }
         public async Task<IEnumerable<formasDePago>> ListaFpg()
         {
-            using SqlConnection connection = new SqlConnection(connectionString);
-            return await connection.QueryAsync<formasDePago>(@"select * from VISI_formasDePago order by orden");
+            //using SqlConnection connection = new SqlConnection(connectionString);
+            
+            return _context.VISI_formasDePago;
+
+            //return await connection.QueryAsync<formasDePago>(@"select * from VISI_formasDePago order by orden");
         }
-        public async Task<bool> Existe(string id, string descrip)
+    public async Task<bool> Existe(string id, string descrip)
         {
-            using SqlConnection connection = new SqlConnection(connectionString);
-            return await connection.QueryFirstOrDefaultAsync<bool>(@"SELECT 1 from VISI_formasDePago where id = @id
-                                                                    or Descripcion = @descrip", new { id, descrip });
+
+            //var retorno = _context.VISI_formasDePago.FirstOrDefault(x => x.Id == id || x.Descripcion == descrip);
+            return _context.VISI_formasDePago.Any(x => x.Id == id || x.Descripcion == descrip);
+
+            // para este tipo de comprobaciones igual es mejor hacer la consulta directamente, te aseguras
+            // un resultado más cercano a la realidad, el context está en memoria...
+
+            //using SqlConnection connection = new SqlConnection(connectionString);
+            //return await connection.QueryFirstOrDefaultAsync<bool>(@"SELECT 1 from VISI_formasDePago where id = @id
+            //                                                        or Descripcion = @descrip", new { id, descrip });
+
+
         }
         public async Task Alta(string id, string descrip)
         {
@@ -43,15 +63,21 @@ namespace VISI.Servicios
         }
         public async Task<formasDePago> FindId(string id)
         {
-            using SqlConnection connection = new SqlConnection(connectionString);
-            return await connection.QueryFirstOrDefaultAsync<formasDePago>(@"SELECT * from VISI_formasDePago where id = @id",
-                                                                            new { id });
+
+            return _context.VISI_formasDePago.FirstOrDefault(x => x.Id == id );
+
+            //  using SqlConnection connection = new SqlConnection(connectionString);
+            //  return await connection.QueryFirstOrDefaultAsync<formasDePago>(@"SELECT * from VISI_formasDePago where id = @id",
+            //                                                                  new { id });
         }
         public async Task BorraId(formasDePago f)
         {
-            using SqlConnection connection = new SqlConnection(connectionString);            
-            await connection.ExecuteAsync("delete from VISI_formasDePago where id = @id and Descripcion = @Descripcion",
-                                                        new { f.Id, f.Descripcion });
+
+            _context.VISI_formasDePago.Remove(f);
+            _context.SaveChanges();
+            //using SqlConnection connection = new SqlConnection(connectionString);            
+            //await connection.ExecuteAsync("delete from VISI_formasDePago where id = @id and Descripcion = @Descripcion",
+            //                                            new { f.Id, f.Descripcion });
         }
         public async Task Ordenar(IEnumerable<formasDePago> ordenadas )
         {

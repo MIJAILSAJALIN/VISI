@@ -166,7 +166,7 @@
                             contenteditable="true" id="cantidad.@pepe" value="@linea.Cantidad" />
                  </td>
                  <td>
-                    <input type="number" asp-for="Detalles[pepe].Precio"  value="@linea.Precio"
+                    <input type="text" asp-for="Detalles[pepe].Precio"  value="@linea.Precio"
                                class="input_container" contenteditable="true" onchange="calculo(@pepe)" id="precio.@pepe" />
                                            <span asp-validation-for="Detalles[pepe].Precio" class="text-danger"></span>
 
