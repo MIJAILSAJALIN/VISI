@@ -1,2 +1,0 @@
-﻿**  Tengo que utilizar las validaciones de campos con REMOTE. Se ejecuta una acción en el servidor para validar la entrada. Devuelve 'Json(true)' si es correcto
-	esto es muy interesante y tengo que practicarlo.
